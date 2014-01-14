@@ -1,5 +1,4 @@
 class Spree::WrappingOrder < ActiveRecord::Base
-  attr_accessible :order_id, :order, :gift_wrapping
 
   after_save :ensure_correct_adjustment, :update_order
 

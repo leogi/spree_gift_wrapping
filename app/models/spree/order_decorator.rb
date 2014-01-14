@@ -1,5 +1,4 @@
 Spree::Order.class_eval do
-  attr_accessible :gift_wrapping_id
 
   belongs_to :gift_wrapping
   has_many :wrapping_orders, :dependent => :destroy
@@ -10,7 +9,7 @@ Spree::Order.class_eval do
     go_to_state :gift_wrapping
     go_to_state :payment, :if => lambda { |order|
       # Fix for #2191
-      if order.shipping_method
+      if order.shipping_method_id? # Bug undefined method shipping_method
         order.create_shipment!
         order.update_totals
       end
@@ -33,7 +32,7 @@ Spree::Order.class_eval do
         {
           :order => self,
           :gift_wrapping => gift_wrapping
-        }, :without_protection => true)
+        })
     end
   end
 
@@ -48,12 +47,12 @@ Spree::Order.class_eval do
     computed_costs = Array.new(Spree::GiftWrapping.all.size)
 
     # create all the threads and kick off their execution
-    threads = Spree::GiftWrapping.all.each_with_index.map do |wrapping_method, index|
-      Thread.new { computed_costs[index] = [wrapping_method, wrapping_method.calculator.compute(self)] }
+    Spree::GiftWrapping.all.each_with_index.map do |wrapping_method, index|
+      computed_costs[index] = [wrapping_method, wrapping_method.calculator.compute(self)]
     end
 
     # wait for all threads to finish
-    threads.map(&:join)
+    # threads.map(&:join) # Fix bug activerecord timeout error
 
     # now consolidate and memoize the threaded results
     @gift_wrapping_hash ||= computed_costs.map do |pair|

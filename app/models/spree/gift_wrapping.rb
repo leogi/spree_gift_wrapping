@@ -1,9 +1,9 @@
 class Spree::GiftWrapping < ActiveRecord::Base
-  attr_accessible :description, :image_attributes, :image
+  include Spree::Core::CalculatedAdjustments
 
   validates_presence_of :description
 
-  calculated_adjustments
+  # calculated_adjustments
   has_one :image, :as => :viewable, :class_name => Spree::Image
 
   accepts_nested_attributes_for :image

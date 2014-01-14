@@ -1,5 +1,6 @@
 en:
-  order_state:
-    gift_wrapping: gift wrapping
+  spree:
+    order_state:
+      gift_wrapping: gift wrapping
 
-  gift_wrapping: Gift Wrapping
+    gift_wrapping: Gift Wrapping

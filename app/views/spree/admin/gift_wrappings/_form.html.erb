@@ -9,10 +9,10 @@
 
     <div data-hook="admin_gift_wrapping_form_calculator_fields" class="omega six columns">
       <fieldset id="image_fields" data-hook class="no-border-bottom">
-        <legend align="center"><%= t(:image) %></legend>
+        <legend align="center"><%= Spree.t(:image) %></legend>
         <div class="field">
           <%= f.fields_for :image do |image_form| %>
-            <%= image_form.label t(:image) %><br>
+            <%= image_form.label Spree.t(:image) %><br>
             <%= image_form.file_field :attachment %>
           <% end %>
           <%= f.error_message_on :image %>
